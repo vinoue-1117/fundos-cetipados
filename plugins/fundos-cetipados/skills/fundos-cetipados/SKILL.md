@@ -1,6 +1,6 @@
 ---
 name: fundos-cetipados
-description: "Sugere aplicação em fundos cetipados (fundos fechados do mercado secundário XP: FII, FIAgro, FIDC, FIP, FI-Infra) para um cliente, a partir da posição consolidada e de um valor de entrada. Compara a carteira por fator de risco (Pós, Inflação, Prefixado) com a alocação-alvo do perfil e escolhe fundos da lista pré-aprovada disponíveis na prateleira. Trigger: 'aplicar em cetipados', 'sugerir fundo cetipado', 'prateleira do secundário', 'onde aplicar R$ X do cliente'."
+description: "Sugere aplicação em fundos cetipados (fundos fechados do mercado secundário XP: FII, FIAgro, FIDC, FIP, FI-Infra) para um cliente, a partir da posição consolidada e de um valor de entrada. Compara a carteira por fator de risco (Pós, Inflação, Prefixado) com a alocação-alvo do perfil e escolhe fundos da lista pré-aprovada disponíveis na prateleira. Trigger: 'aplicar em cetipados', 'sugerir fundo cetipado', 'prateleira do secundário', 'onde aplicar R$ X do cliente', 'mostrar configuração dos cetipados'."
 ---
 
 # Sugestão de aplicação em fundos cetipados
@@ -15,7 +15,11 @@ Arquivos da skill (leia todos no passo 1):
 - `config/aprovados.csv`: fundos pré-aprovados com fator, público-alvo e prazo. Linhas com `revisar=sim` estão sem fator definido: só entram na sugestão se o assessor informar o fator na conversa.
 - `references/navegacao.md`: como ler a prateleira do secundário.
 
-Todo número da saída vem da posição, dos arquivos da skill ou da prateleira. Dado ausente vira **lacuna** explícita na saída, nunca estimativa.
+Todo número da saída vem da posição, dos arquivos da skill, da prateleira ou de um ajuste do assessor na conversa. Dado ausente vira **lacuna** explícita na saída, nunca estimativa.
+
+**Ajustes na conversa.** Para o cliente em análise, o assessor pode trocar o alvo de uma classe ou o `limite_por_ativo_pct`. Use o valor dele no lugar do arquivo e registre o ajuste na saída. Se o alvo ajustado tirar a soma do perfil de 100%, pergunte qual classe compensa. O resto segue os arquivos: lista de aprovados, público-alvo e reclassificações não se ajustam.
+
+**Mostrar configuração.** Se o assessor pedir para ver a configuração, responda só com tabelas no chat, lidas dos arquivos: alvo por classe × perfil; parâmetros; fundos aprovados (fundo, gestora, tipo, fator, público-alvo, prazo), marcando os `revisar=sim`. Não rode os passos abaixo.
 
 ## 1. Inputs
 
@@ -56,8 +60,9 @@ Dentro dessas regras há liberdade de julgamento: diversificação entre gestora
 
 ## 6. Saída (tabela no chat)
 
-1. **Alocação por classe**: classe | alvo | atual | após sugestão (em %).
-2. **Sugestão**: fundo | fator | valor (R$) | % do patrimônio | dados da oferta | motivo.
-3. **Lacunas e ressalvas**: dados ausentes, classificações inferidas, fundos `revisar=sim` ignorados, resíduo não alocado.
+1. **Parâmetros usados**: perfil, qualificação, limite por ativo. Cada ajuste da conversa aparece com o valor do arquivo ao lado, ex.: `Inflação 20% (padrão: 15%)`.
+2. **Alocação por classe**: classe | alvo | atual | após sugestão (em %).
+3. **Sugestão**: fundo | fator | valor (R$) | % do patrimônio | dados da oferta | motivo.
+4. **Lacunas e ressalvas**: dados ausentes, classificações inferidas, fundos `revisar=sim` ignorados, resíduo não alocado.
 
 Formato: moeda `R$ 1.234,56`, percentuais com vírgula, datas `DD/MM/AAAA`.

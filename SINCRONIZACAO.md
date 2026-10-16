@@ -18,7 +18,13 @@ O painel ([artefato](https://claude.ai/artifact/Yb5HjC5wDChzxN6rcjXyPq), fonte e
 2. `python -I sincronizar.py importar <out_dir>`: grava os três arquivos. Para se a alocação de algum perfil não somar 100%.
 3. `python gerar_aprovados.py`: regera `aprovados.csv` e `sync/base_fundos.json`.
 4. Grave `base/fundos` (passo seguinte) e `config/sync` com `ultima_sync_em` atual.
-5. Commit e push na `master`. O repositório é o marketplace do plugin (`.claude-plugin/marketplace.json`); quem instalou pelo [roteiro de instalação](https://claude.ai/artifact/7VZTF13nUB7vvg2a1MTjnx) recebe a versão nova pela sincronização do marketplace. O plugin não declara `version`, então cada commit conta como atualização.
+5. Commit e push na `master`. O repositório é o marketplace do plugin (`.claude-plugin/marketplace.json`).
+
+## Liberar versão para os assessores
+
+Quem instalou pelo [roteiro de instalação](https://claude.ai/artifact/7VZTF13nUB7vvg2a1MTjnx) só recebe atualização quando o campo `version` de `plugins/fundos-cetipados/.claude-plugin/plugin.json` muda. Commits sem essa mudança ficam no repositório e não chegam a ninguém.
+
+Para liberar: suba a versão (`1.0.0` → `1.0.1` para ajuste de config ou texto, `1.1.0` para mudança de comportamento da skill), commit e push na `master`.
 
 ## Arquivos → painel
 
