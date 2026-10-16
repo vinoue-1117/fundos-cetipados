@@ -1,0 +1,14 @@
+{
+  "name": "fundos-cetipados",
+  "description": "Skills de assessoria de investimentos.",
+  "owner": {
+    "name": "Victor Inoue"
+  },
+  "plugins": [
+    {
+      "name": "fundos-cetipados",
+      "source": "./plugins/fundos-cetipados",
+      "description": "Sugestão de aplicação em fundos cetipados do mercado secundário XP."
+    }
+  ]
+}

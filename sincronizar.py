@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 BASE = Path(__file__).parent
-CONFIG = BASE / "fundos-cetipados" / "config"
+CONFIG = BASE / "plugins" / "fundos-cetipados" / "skills" / "fundos-cetipados" / "config"
 DOCS = BASE / "sync" / "docs"
 PERFIS = ["conservadora", "moderada", "sofisticada"]
 CAMPOS_SOB = ["fundo", "fator", "fonte", "confianca", "aprovacao", "nota"]

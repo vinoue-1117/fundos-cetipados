@@ -8,8 +8,8 @@ O painel ([artefato](https://claude.ai/artifact/Yb5HjC5wDChzxN6rcjXyPq), fonte e
 |---|---|---|
 | `base/fundos` | `sync/base_fundos.json` (gerado) | `gerar_aprovados.py`, a partir do Guia e do histórico. O painel só lê. |
 | `sobrescritas/<cnpj>` | `sobrescritas.csv` | painel: fator, fonte, confiança, aprovação (incluir/excluir), nota |
-| `config/alocacao` | `fundos-cetipados/config/alocacao-alvo.csv` | painel |
-| `config/parametros` | `fundos-cetipados/config/parametros.csv` | painel |
+| `config/alocacao` | `plugins/fundos-cetipados/skills/fundos-cetipados/config/alocacao-alvo.csv` | painel |
+| `config/parametros` | `plugins/fundos-cetipados/skills/fundos-cetipados/config/parametros.csv` | painel |
 | `config/sync` | — | marca `ultima_sync_em` (ISO, UTC); o painel compara com o `atualizado_em` de cada documento para mostrar edições pendentes |
 
 ## Painel → arquivos
@@ -18,7 +18,7 @@ O painel ([artefato](https://claude.ai/artifact/Yb5HjC5wDChzxN6rcjXyPq), fonte e
 2. `python -I sincronizar.py importar <out_dir>`: grava os três arquivos. Para se a alocação de algum perfil não somar 100%.
 3. `python gerar_aprovados.py`: regera `aprovados.csv` e `sync/base_fundos.json`.
 4. Grave `base/fundos` (passo seguinte) e `config/sync` com `ultima_sync_em` atual.
-5. Reempacote a skill e suba no Cowork.
+5. Commit e push na `master`. O repositório é o marketplace do plugin (`.claude-plugin/marketplace.json`); quem instalou pelo [roteiro de instalação](https://claude.ai/artifact/7VZTF13nUB7vvg2a1MTjnx) recebe a versão nova pela sincronização do marketplace. O plugin não declara `version`, então cada commit conta como atualização.
 
 ## Arquivos → painel
 

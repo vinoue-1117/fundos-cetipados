@@ -1,4 +1,4 @@
-"""Gera fundos-cetipados/config/aprovados.csv a partir do historico do secundario e do Guia de Fundos.
+"""Gera plugins/fundos-cetipados/skills/fundos-cetipados/config/aprovados.csv a partir do historico do secundario e do Guia de Fundos.
 
 Base: fundos com ao menos uma compra no historico e presentes nas abas Cetipados ou PR+ do Guia.
 Criterio de pre-aprovacao: compras de pelo menos `min_contas_aprovacao` contas distintas (config/parametros.csv).
@@ -16,7 +16,7 @@ from pathlib import Path
 import pandas as pd
 
 BASE = Path(__file__).parent
-CONFIG = BASE / "fundos-cetipados" / "config"
+CONFIG = BASE / "plugins" / "fundos-cetipados" / "skills" / "fundos-cetipados" / "config"
 SAIDA = CONFIG / "aprovados.csv"
 SAIDA_SYNC = BASE / "sync" / "base_fundos.json"
 ABAS = ["Fundos Cetipados", "Fundos PR+"]
