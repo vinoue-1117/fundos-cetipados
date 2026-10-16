@@ -95,12 +95,13 @@ out = pd.DataFrame({
     "compras_historico": df["compras"],
     "contas_historico": df["contas"],
 })
-aprovados = out[df["aprovado"].values].sort_values(["fator", "contas_historico"], ascending=[True, False])
+# Público-alvo fica fora da skill: a prateleira informa a exigência de cada oferta.
+aprovados = out[df["aprovado"].values].drop(columns="publico_alvo").sort_values(["fator", "contas_historico"], ascending=[True, False])
 
 SAIDA.parent.mkdir(parents=True, exist_ok=True)
 aprovados.to_csv(SAIDA, sep=";", index=False, encoding="utf-8-sig")
 print(f"{len(aprovados)} fundos gravados em {SAIDA}")
-print(aprovados[["fundo", "objetivo_retorno", "fator", "publico_alvo"]].to_string())
+print(aprovados[["fundo", "objetivo_retorno", "fator"]].to_string())
 
 base = [
     {

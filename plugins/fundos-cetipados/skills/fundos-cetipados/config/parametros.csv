@@ -2,4 +2,4 @@ chave;valor;descricao
 limite_por_ativo_pct;2,5;Máximo por fundo, em % do patrimônio total do cliente
 qualificacao_padrao;Investidor Qualificado;Qualificação assumida quando o assessor não informa outra
 min_contas_aprovacao;3;Contas distintas compradoras no histórico para um fundo entrar na lista pré-aprovada (usado na geração de aprovados.csv)
-reclassificar_pos_demais;Oasis, Genesis, Aruba;Nomes que a XP classifica como Multimercado e que contam como Pós-fixado - Demais
+reclassificar_pos_demais;Oasis, Genesis, Aruba;Nomes que a XP classifica como Multimercado e que contam como Pós-fixado

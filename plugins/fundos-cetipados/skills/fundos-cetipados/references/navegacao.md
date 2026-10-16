@@ -10,11 +10,11 @@
 
 - **Destaques**: carrossel de fundos em cards (preço unitário, deságio, DY 12M, rentabilidade bruta 12M). Não usar: é um subconjunto da tabela.
 - **Todos os fundos**: tabela com abas **Cetipados**, **Portfólio Renda+**, **Alternativos**, **Revolvência** e **Todos**. As abas correspondem ao `aba_guia` de `aprovados.csv` (Cetipados, PR+).
-- Filtros acima da tabela: **Estoque** (`XP`, `Cliente`), **Classificação**, **Tributação** e busca por nome. O selo **Mercado Aberto/Fechado** indica a janela de negociação.
+- Filtros acima da tabela: **Estoque** (`XP`, `Cliente`), **Classificação**, **Tributação** e busca por nome.
 - Colunas nas abas de família: Nome do Fundo, Qtd. mínima, Preço unitário, Qtd. estoque XP, Deságio/Ágio estoque XP, Qtd. estoque cliente, Deságio/Ágio estoque cliente, Rentab. bruta (12M), Dividend Yield (12M), Risco, Ações. Na aba **Todos** as duas fontes de estoque viram uma só coluna (Qtd. disponível, Deságio compra).
 - Expandir a linha mostra objetivo, política, último dividendo, DY, preço e **data da cota**.
 - O fundo tem duas fontes de oferta: **estoque XP** (tesouraria) e **estoque cliente** (cotas que outros clientes puseram à venda). Cada uma tem quantidade e deságio próprios.
-- Botão **Comprar**: há estoque. Botão **Avise-me**: estoque zerado.
+- Botão **Comprar**: há estoque, mesmo que abaixo do mínimo de aplicação (ver Disponibilidade). Botão **Avise-me**: estoque zerado.
 
 ## Coleta
 
@@ -33,8 +33,23 @@ O texto da página (`get_page_text`) passa de 180 mil caracteres e não traz CNP
    };
    ```
 
-2. Clique em **Atualizar**. A página chama `GET api-advisor.xpi.com.br/investment-funds/yield-rede/v3/investment-funds-secondary?fundFamily=` e devolve todas as famílias de uma vez (cerca de 150 fundos). Chamar a URL direto dá 401: a página envia chave e token próprios.
-3. Leia `JSON.parse(window.__cap.lista).data` e extraia só os campos da tabela abaixo, para os fundos de `aprovados.csv`.
+2. Clique em **Atualizar**. A página chama `GET api-advisor.xpi.com.br/investment-funds/yield-rede/v3/investment-funds-secondary?fundFamily=` e devolve todas as famílias de uma vez (cerca de 150 fundos). Chamar a URL direto dá 401: a página envia chave e token próprios. A resposta chega alguns segundos depois do clique: aguarde 2 a 3 s e confira se `window.__cap.lista` existe antes de concluir que a captura falhou.
+3. O retorno do `javascript_tool` é truncado em 1 a 2 mil caracteres. Monte uma linha compacta por fundo aprovado, com os CNPJs de `aprovados.csv`:
+
+   ```js
+   const cnpjs = [/* CNPJs de aprovados.csv, 14 dígitos, como texto */];
+   const d = JSON.parse(window.__cap.lista).data;
+   const cnpj = f => (String(f.documentRegulation || '').match(/(\d{14})\.pdf/i) || [])[1] || '';
+   const linha = f => [cnpj(f), f.fundName, f.fundFamily, f.unityPrice, f.quotaDate,
+     f.stockOfTreasuryQuotas, f.secondaryPurchaseDiscount, f.stockOfPeerToPeerQuotas, f.peerToPeerBuyDiscount,
+     f.minimumQuotaQuantity, f.minimalInitialInvestment, f.isQualifiedInvestor, f.isProfessionalInvestor,
+     (f.tags || []).map(x => x.title).join('/')].join('|');
+   window.__cap.d = d; window.__cap.linha = linha;
+   window.__cap.rows = d.filter(f => cnpjs.includes(cnpj(f))).map(linha);
+   window.__cap.rows.length;
+   ```
+
+   Leia em blocos de 8: `window.__cap.rows.slice(0, 8).join('\n')`, depois `slice(8, 16)` e assim por diante. Aprovado que não apareceu (sem CNPJ na URL): `window.__cap.d.filter(f => /trecho do nome/i.test(f.fundName)).map(window.__cap.linha).join('\n')`.
 4. Restaure: `window.fetch = window.__origFetch`.
 
 A captura falhou (sem `__cap.lista` depois do Atualizar): caia para `get_page_text` na aba **Cetipados** e depois na **Portfólio Renda+**, casando pelo nome.
@@ -70,4 +85,4 @@ Números vêm como texto no formato brasileiro (`"1.234,56"`), exceto `profitabi
 
 ## Disponibilidade
 
-Um fundo está **disponível** quando `stockOfTreasuryQuotas` ou `stockOfPeerToPeerQuotas` é maior que zero. Para cada fonte com estoque, registre quantidade, deságio/ágio e valor disponível (quantidade × preço unitário). Não aplique o deságio ao preço: o preço efetivo da ordem sai na plataforma. Com as duas zeradas, o fundo está **indisponível**.
+Cada fonte de oferta (`stockOfTreasuryQuotas`, `stockOfPeerToPeerQuotas`) tem estoque quando a quantidade é maior ou igual a `minimumQuotaQuantity` (sem mínimo informado: maior que zero). Quantidade acima de zero e abaixo do mínimo é **estoque residual**: não atende a aplicação mínima e conta como sem estoque. Um fundo está **disponível** quando ao menos uma fonte tem estoque. Para cada fonte com estoque, registre quantidade, deságio/ágio e valor disponível (quantidade × preço unitário). Não aplique o deságio ao preço: o preço efetivo da ordem sai na plataforma. Sem estoque nas duas fontes, o fundo está **indisponível**; cite o estoque residual nas ressalvas.

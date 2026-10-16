@@ -266,8 +266,7 @@ textarea { resize: vertical; min-height: 40px; }
   const FATORES = ["Pós", "Inflação", "Pré"];
   const FCOR = { "Pós": "var(--pos)", "Inflação": "var(--inf)", "Pré": "var(--pre)", "": "var(--bad)" };
   const CLASSE = {
-    "Pós-fixado - Caixa (mínimo)": { s: "Caixa", c: "#8fc1e3", t: "#121c26" },
-    "Pós-fixado - Demais": { s: "Pós", c: "#1f6fb2", t: "#fff", f: "Pós" },
+    "Pós-fixado": { s: "Pós", c: "#1f6fb2", t: "#fff", f: "Pós" },
     "Inflação": { s: "Inflação", c: "#c98210", t: "#fff", f: "Inflação" },
     "Prefixado": { s: "Pré", c: "#7c4dbc", t: "#fff", f: "Pré" },
     "Renda Fixa Internacional": { s: "RF Int.", c: "#4f6d8c", t: "#fff" },
@@ -396,7 +395,7 @@ textarea { resize: vertical; min-height: 40px; }
       ),
       h("div", { class: "card" },
         h("div", { class: "head" }, h("h2", {}, "Limites")),
-        h("div", { class: "guards" }, [["sugere", "Só sugere"], ["olho", "Prateleira: só leitura"], ["alerta", "Sem dado = lacuna"], ["proibido", "Cetipado ≠ Caixa"]].map(([i, t]) => h("div", { class: "guard" }, ico(i), t)))
+        h("div", { class: "guards" }, [["sugere", "Só sugere"], ["olho", "Prateleira: só leitura"], ["alerta", "Sem dado = lacuna"]].map(([i, t]) => h("div", { class: "guard" }, ico(i), t)))
       ),
       h("div", { class: "card" },
         h("div", { class: "head" }, h("h2", {}, "Sincronização"), h("p", { class: "cap" }, "A skill roda só com os arquivos dela")),
@@ -601,7 +600,7 @@ textarea { resize: vertical; min-height: 40px; }
           h("p", { class: "cap" }, "Cada barra é um fundo: contas distintas que compraram no histórico. Inclusões e exclusões manuais valem por cima.")),
         h("div", { class: "card ctile" },
           h("span", { class: "lbl" }, "Reclassificação"),
-          h("div", { class: "reclass" }, h("span", { class: "pillx" }, "Multimercado na XP"), "→", h("span", { class: "pillp" }, "Pós-Demais")),
+          h("div", { class: "reclass" }, h("span", { class: "pillx" }, "Multimercado na XP"), "→", h("span", { class: "pillp" }, "Pós-fixado")),
           h("div", { class: "terms" }, d.reclassificar_pos_demais.map((t, i) => h("span", { class: "term" }, t,
             h("button", { "aria-label": "Remover " + t, disabled: dis, onclick: () => { d.reclassificar_pos_demais.splice(i, 1); renderConfig(); } }, "✕")))),
           h("div", { class: "addterm" }, h("input", { id: "novoTermo", placeholder: "Termo no nome do fundo", disabled: dis, "aria-label": "Novo termo",

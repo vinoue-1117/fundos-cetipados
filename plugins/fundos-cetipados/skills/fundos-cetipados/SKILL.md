@@ -11,15 +11,15 @@ Arquivos da skill (leia todos no passo 1):
 
 - `config/alocacao-alvo.csv`: alvo por classe para cada perfil (conservadora, moderada, sofisticada), com comentário por classe.
 - `config/parametros.csv`: limite por ativo, qualificação padrão e termos de reclassificação.
-- `config/regras.md`: limite por ativo, público-alvo, reclassificações, mapeamento das seções do relatório, definição de Caixa.
-- `config/aprovados.csv`: fundos pré-aprovados com fator, público-alvo e prazo. Linhas com `revisar=sim` estão sem fator definido: só entram na sugestão se o assessor informar o fator na conversa.
+- `config/regras.md`: limite por ativo e casamento da posição com os aprovados, público-alvo, reclassificações, mapeamento das seções do relatório.
+- `config/aprovados.csv`: fundos pré-aprovados com fator e prazo. Linhas com `revisar=sim` estão sem fator definido: só entram na sugestão se o assessor informar o fator na conversa.
 - `references/navegacao.md`: como ler a prateleira do secundário.
 
 Todo número da saída vem da posição, dos arquivos da skill, da prateleira ou de um ajuste do assessor na conversa. Dado ausente vira **lacuna** explícita na saída, nunca estimativa.
 
 **Ajustes na conversa.** Para o cliente em análise, o assessor pode trocar o alvo de uma classe ou o `limite_por_ativo_pct`. Use o valor dele no lugar do arquivo e registre o ajuste na saída. Se o alvo ajustado tirar a soma do perfil de 100%, pergunte qual classe compensa. O resto segue os arquivos: lista de aprovados, público-alvo e reclassificações não se ajustam.
 
-**Mostrar configuração.** Se o assessor pedir para ver a configuração, responda só com tabelas no chat, lidas dos arquivos: alvo por classe × perfil; parâmetros; fundos aprovados (fundo, gestora, tipo, fator, público-alvo, prazo), marcando os `revisar=sim`. Não rode os passos abaixo.
+**Mostrar configuração.** Se o assessor pedir para ver a configuração, responda só com tabelas no chat, lidas dos arquivos: alvo por classe × perfil; parâmetros; fundos aprovados (fundo, gestora, tipo, fator, prazo), marcando os `revisar=sim`. Não rode os passos abaixo.
 
 ## 1. Inputs
 
@@ -30,38 +30,38 @@ Reúna:
 - **Perfil de alocação**: conservadora, moderada ou sofisticada. O relatório não traz o perfil: pergunte.
 - **Qualificação**: default `qualificacao_padrao` de `parametros.csv`. Confirme junto com o perfil.
 
-Pergunte tudo o que faltar numa mensagem só. Pronto quando os quatro itens estiverem confirmados.
+Pergunte tudo o que faltar numa mensagem só. Item que o assessor não responder assume o default e aparece como "(padrão)" em Parâmetros usados. Pronto quando os quatro itens estiverem definidos.
 
 ## 2. Carteira atual por classe
 
-Leia a posição e atribua cada ativo a uma classe de `alocacao-alvo.csv`, usando o mapeamento de seções e as reclassificações de `regras.md`. Separe Pós-fixado em Caixa e Demais pela regra de Caixa.
+Leia a posição e atribua cada ativo a uma classe de `alocacao-alvo.csv`, usando o mapeamento de seções e as reclassificações de `regras.md`.
 
 Calcule o % de cada classe sobre o patrimônio total. Pronto quando toda linha do relatório estiver numa classe, com as inferidas marcadas, e a soma bater com o patrimônio do relatório.
 
 ## 3. Lacunas contra o alvo
 
-Para cada classe: alvo do perfil, % atual, e diferença em R$ sobre o patrimônio pós-aplicação. Os cetipados podem cobrir lacunas em **Pós-fixado - Demais**, **Inflação** e **Prefixado** (pelo `fator` de `aprovados.csv`).
+Para cada classe: alvo do perfil, % atual, e diferença em R$ sobre o patrimônio pós-aplicação. Os cetipados podem cobrir lacunas em **Pós-fixado**, **Inflação** e **Prefixado** (pelo `fator` de `aprovados.csv`).
 
-Se as lacunas positivas estiverem só em classes que cetipados não cobrem (Caixa, RV, Internacional, Multimercados), diga isso na saída e indique a classe que pede o recurso. A sugestão de cetipados, nesse caso, é opcional e justificada.
+Se as lacunas positivas estiverem só em classes que cetipados não cobrem (RV, Internacional, Multimercados), diga isso na saída e indique a classe que pede o recurso. A sugestão de cetipados, nesse caso, é opcional e justificada.
 
 ## 4. Prateleira
 
-Siga `references/navegacao.md` e colete, para cada fundo de `aprovados.csv` elegível pelo público-alvo, se há oferta disponível e os dados da oferta. Pronto quando cada fundo elegível estiver como disponível (com os dados) ou indisponível.
+Siga `references/navegacao.md` e colete, para cada fundo de `aprovados.csv`, se há oferta disponível, os dados da oferta e o público-alvo exigido. Fundo cujo público-alvo o cliente não atende (`regras.md`) fica fora da sugestão. Pronto quando cada fundo estiver como disponível (com os dados), indisponível ou fora do público-alvo.
 
 ## 5. Seleção
 
 Monte a sugestão com um ou mais fundos disponíveis:
 
 - Priorize as classes com maior lacuna em R$.
-- Respeite o limite por ativo de `regras.md`, somando a posição existente no mesmo fundo.
+- Respeite o limite por ativo de `regras.md`, somando a posição existente no mesmo fundo. Fundo já no limite ou acima não recebe sugestão.
 - A soma das sugestões fecha o valor de entrada, ou a saída explica o resíduo.
 
 Dentro dessas regras há liberdade de julgamento: diversificação entre gestoras e tipos, prazo de encerramento, condição da oferta. Registre o motivo de cada escolha em uma linha.
 
 ## 6. Saída (tabela no chat)
 
-1. **Parâmetros usados**: perfil, qualificação, limite por ativo. Cada ajuste da conversa aparece com o valor do arquivo ao lado, ex.: `Inflação 20% (padrão: 15%)`.
-2. **Alocação por classe**: classe | alvo | atual | após sugestão (em %).
+1. **Parâmetros usados**: perfil, qualificação, limite por ativo (em % e em R$), valor de entrada e origem, patrimônio-base. Cada ajuste da conversa aparece com o valor do arquivo ao lado, ex.: `Inflação 20% (padrão: 15%)`.
+2. **Alocação por classe**: classe | alvo | atual | após sugestão (em %) | lacuna (R$).
 3. **Sugestão**: fundo | fator | valor (R$) | % do patrimônio | dados da oferta | motivo.
 4. **Lacunas e ressalvas**: dados ausentes, classificações inferidas, fundos `revisar=sim` ignorados, resíduo não alocado.
 

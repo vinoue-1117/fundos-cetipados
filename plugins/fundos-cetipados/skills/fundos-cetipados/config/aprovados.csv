@@ -1,32 +1,32 @@
-﻿fundo;cnpj;aba_guia;gestora;tipo;classe_cvm;publico_alvo;objetivo_retorno;prazo_encerramento_anos;fator;revisar;compras_historico;contas_historico
-Maua Lajes Corporativas Feeder FII RL - Senior;62526654000100;PR+;Mauá Capital;Imobiliário;FII;Investidor em Geral;3% (remarcação inicial) + IPCA + 8,75% a.a.;5 + 2;Inflação;;26;22
-LCP Renda Imobiliária Feeder FII;59196234000107;PR+;LCP Gestora de Recursos;Imobiliário;FII;Investidor em Geral;IPCA + 9,5%;5 + 2;Inflação;;20;17
-MCCE11 - Mauá Capital Crédito Estruturado;43741195000133;Cetipados;Mauá Capital;Imobiliário;FII;Investidor em Geral;IPCA + 9,7% a.a.;5 + 2;Inflação;;16;13
-Mauá Capital Logística Feeder FII - RL;57979459000104;PR+;Mauá Capital;Imobiliário;FII;Investidor em Geral;IPCA + 9,00% a.a.;7;Inflação;;13;12
-TG Renda Urbana Feeder FII RL;60513922000124;PR+;;Imobiliário;FII;Investidor em Geral;IPCA + 9,50% a.a.;5 + 1;Inflação;;8;8
-JGPI11 - JGP Infra;52915104000120;Cetipados;JGP Asset Management;Infraestrutura;Multimercado;Investidor em Geral;IPCA + 2,7%;5 + 2;Inflação;;7;7
-XPHB11 - XP Habitat FII;50385179000110;Cetipados;XP Asset Management;Imobiliário;FII;Investidor em Geral;;7;Inflação;;6;6
-XP Habitat Renda Imobiliária II Feeder FII RL;65196656000177;PR+;XP Asset Management;;FII;Investidor em Geral;;;Inflação;;6;6
-XP Habitat Renda Imobiliária Feeder FII;62021906000140;PR+;XP Asset Management;Imobiliário;FII;Investidor em Geral;IPCA +9,5%;5 + 2;Inflação;;6;5
-Riza Malls Feeder FII RL;62995712000145;PR+;;;FII;Investidor em Geral;;;Inflação;;4;4
-Alianza Crédito Renda Mais Feeder FII RL;63669622000127;PR+;Alianza Investimentos;;FII;Investidor em Geral;;;Inflação;;3;3
-LCP Prefixado Feeder FII;61922643000187;PR+;LCP Gestora de Recursos;Imobiliário;FII;Investidor Qualificado;0.15;5 + 2;Pré;;25;22
-LCP Prefixado II Feeder FII RL;63918369000106;PR+;LCP Gestora de Recursos;;FII;Investidor em Geral;;;Pré;;16;14
-Valora CRI Pré I Feeder I FII RL;63496639000120;PR+;Valora Investimentos;;FII;Investidor em Geral;;;Pré;;11;10
-Vinci MAV IV FIAGRO FIC RL;65344621000138;PR+;;;Classes de Cotas de Fundos FIAGRO;Investidor em Geral;;;Pré;;13;9
-Sparta Pré 2028 FI-Infra RF CP RL;56992930000123;PR+;Sparta Investimentos;Infraestrutura;Renda Fixa;Investidor Qualificado;Taxa Pré Jan/2028 isenta;3;Pré;;8;7
-TG Renda Imobiliária Feeder Pré FII RL;64099959000109;PR+;TG Core Asset Management;;FII;Investidor em Geral;;;Pré;;9;6
-Valora Agro Pré I Fiagro RL;64290120000153;PR+;;;Classes de Cotas de Fundos FIAGRO;Investidor em Geral;;;Pré;;7;6
-AZ Quest Panorama Renda CDI FI Responsabilidade Limitada;61848349000172;PR+;Panorama Capital;Imobiliário;FII;Investidor em Geral;CDI +2,4%;5 + 1;Pós;;31;25
-Hedge Crédito CDI Renda Mais FII;62252669000128;PR+;Hedge Investments;;FII;Investidor em Geral;;;Pós;;22;17
-Root Capital Figueira FIDC de Responsab Limit;57271402000148;PR+;Root Capital;FIDC;FIDC;Investidor Qualificado;CDI + 4,25%;5;Pós;;11;9
-JiveMauá BossaNova Crédito Securitizado FIDC - Cota Sênior;60103810000103;PR+;Mauá Capital;FIDC;FIDC;Investidor Qualificado;CDI + 4%;7;Pós;;7;7
-AUGM11 - Augme Crédito Estruturado FII RL;55296764000168;PR+;Augme Capital;Imobiliário;FII;Investidor Qualificado;CDI + 1,70%;5;Pós;;7;6
-Bocaina Infra DI Renda;60449267000192;PR+;Bocaina Capital;Infraestrutura;Renda Fixa;Investidor em Geral;CDI + 2%;6;Pós;;6;6
-JiveMauá Bossanova Crédito Securitizado (Varejo) FIDC RL;60261869000111;PR+;Mauá Capital;FIDC;FIDC;Investidor em Geral;CDI + 2,15%;3;Pós;;6;5
-Solis Portfolio Crédito CDI+ FIC FIDC RL;58525584000107;PR+;Solis Investimentos;FIDC;FIDC;Investidor em Geral;CDI+2 ao longo do prazo do fundo;6;Pós;;6;5
-XP Agro Renda Feeder Fiagro RL;63608356000122;PR+;XP Asset Management;;Classes de Cotas de Fundos FIAGRO;Investidor em Geral;;;Pós;;8;5
-AZQA11 - AZ Quest Luna - FIAgro;49863204000145;Cetipados;AZ QUEST AGRO LTDA.;Agronegócio;Classes de Cotas de Fundos FIAGRO;Investidor em Geral;CDI + 1%;5 + 2;Pós;;3;3
-RZDS11 - Riza Domus FII;50750438000165;Cetipados;Riza Asset Management;Imobiliário;FII;Investidor em Geral;CDI + 3,0% a 4,0% a.a.;;Pós;;5;3
-Legacy Capital Portfolio Renda Mais FI-INFRA RF LP RL;57021822000176;PR+;Legacy Capital;Infraestrutura;Renda Fixa;Investidor em Geral;CDI + 1.7% a.a. ;7;Pós;;4;3
-Verde A&I Portfolio Renda Mais FII RL;60079651000140;PR+;Verde Asset Agro e Imobiliário Ltda;Imobiliário;FII;Investidor em Geral;CDI + 2,5% a.a. líquido de IR;6 + 1;Pós;;5;3
+﻿fundo;cnpj;aba_guia;gestora;tipo;classe_cvm;objetivo_retorno;prazo_encerramento_anos;fator;revisar;compras_historico;contas_historico
+Maua Lajes Corporativas Feeder FII RL - Senior;62526654000100;PR+;Mauá Capital;Imobiliário;FII;3% (remarcação inicial) + IPCA + 8,75% a.a.;5 + 2;Inflação;;26;22
+LCP Renda Imobiliária Feeder FII;59196234000107;PR+;LCP Gestora de Recursos;Imobiliário;FII;IPCA + 9,5%;5 + 2;Inflação;;20;17
+MCCE11 - Mauá Capital Crédito Estruturado;43741195000133;Cetipados;Mauá Capital;Imobiliário;FII;IPCA + 9,7% a.a.;5 + 2;Inflação;;16;13
+Mauá Capital Logística Feeder FII - RL;57979459000104;PR+;Mauá Capital;Imobiliário;FII;IPCA + 9,00% a.a.;7;Inflação;;13;12
+TG Renda Urbana Feeder FII RL;60513922000124;PR+;;Imobiliário;FII;IPCA + 9,50% a.a.;5 + 1;Inflação;;8;8
+JGPI11 - JGP Infra;52915104000120;Cetipados;JGP Asset Management;Infraestrutura;Multimercado;IPCA + 2,7%;5 + 2;Inflação;;7;7
+XPHB11 - XP Habitat FII;50385179000110;Cetipados;XP Asset Management;Imobiliário;FII;;7;Inflação;;6;6
+XP Habitat Renda Imobiliária II Feeder FII RL;65196656000177;PR+;XP Asset Management;;FII;;;Inflação;;6;6
+XP Habitat Renda Imobiliária Feeder FII;62021906000140;PR+;XP Asset Management;Imobiliário;FII;IPCA +9,5%;5 + 2;Inflação;;6;5
+Riza Malls Feeder FII RL;62995712000145;PR+;;;FII;;;Inflação;;4;4
+Alianza Crédito Renda Mais Feeder FII RL;63669622000127;PR+;Alianza Investimentos;;FII;;;Inflação;;3;3
+LCP Prefixado Feeder FII;61922643000187;PR+;LCP Gestora de Recursos;Imobiliário;FII;0.15;5 + 2;Pré;;25;22
+LCP Prefixado II Feeder FII RL;63918369000106;PR+;LCP Gestora de Recursos;;FII;;;Pré;;16;14
+Valora CRI Pré I Feeder I FII RL;63496639000120;PR+;Valora Investimentos;;FII;;;Pré;;11;10
+Vinci MAV IV FIAGRO FIC RL;65344621000138;PR+;;;Classes de Cotas de Fundos FIAGRO;;;Pré;;13;9
+Sparta Pré 2028 FI-Infra RF CP RL;56992930000123;PR+;Sparta Investimentos;Infraestrutura;Renda Fixa;Taxa Pré Jan/2028 isenta;3;Pré;;8;7
+TG Renda Imobiliária Feeder Pré FII RL;64099959000109;PR+;TG Core Asset Management;;FII;;;Pré;;9;6
+Valora Agro Pré I Fiagro RL;64290120000153;PR+;;;Classes de Cotas de Fundos FIAGRO;;;Pré;;7;6
+AZ Quest Panorama Renda CDI FI Responsabilidade Limitada;61848349000172;PR+;Panorama Capital;Imobiliário;FII;CDI +2,4%;5 + 1;Pós;;31;25
+Hedge Crédito CDI Renda Mais FII;62252669000128;PR+;Hedge Investments;;FII;;;Pós;;22;17
+Root Capital Figueira FIDC de Responsab Limit;57271402000148;PR+;Root Capital;FIDC;FIDC;CDI + 4,25%;5;Pós;;11;9
+JiveMauá BossaNova Crédito Securitizado FIDC - Cota Sênior;60103810000103;PR+;Mauá Capital;FIDC;FIDC;CDI + 4%;7;Pós;;7;7
+AUGM11 - Augme Crédito Estruturado FII RL;55296764000168;PR+;Augme Capital;Imobiliário;FII;CDI + 1,70%;5;Pós;;7;6
+Bocaina Infra DI Renda;60449267000192;PR+;Bocaina Capital;Infraestrutura;Renda Fixa;CDI + 2%;6;Pós;;6;6
+JiveMauá Bossanova Crédito Securitizado (Varejo) FIDC RL;60261869000111;PR+;Mauá Capital;FIDC;FIDC;CDI + 2,15%;3;Pós;;6;5
+Solis Portfolio Crédito CDI+ FIC FIDC RL;58525584000107;PR+;Solis Investimentos;FIDC;FIDC;CDI+2 ao longo do prazo do fundo;6;Pós;;6;5
+XP Agro Renda Feeder Fiagro RL;63608356000122;PR+;XP Asset Management;;Classes de Cotas de Fundos FIAGRO;;;Pós;;8;5
+AZQA11 - AZ Quest Luna - FIAgro;49863204000145;Cetipados;AZ QUEST AGRO LTDA.;Agronegócio;Classes de Cotas de Fundos FIAGRO;CDI + 1%;5 + 2;Pós;;3;3
+RZDS11 - Riza Domus FII;50750438000165;Cetipados;Riza Asset Management;Imobiliário;FII;CDI + 3,0% a 4,0% a.a.;;Pós;;5;3
+Legacy Capital Portfolio Renda Mais FI-INFRA RF LP RL;57021822000176;PR+;Legacy Capital;Infraestrutura;Renda Fixa;CDI + 1.7% a.a. ;7;Pós;;4;3
+Verde A&I Portfolio Renda Mais FII RL;60079651000140;PR+;Verde Asset Agro e Imobiliário Ltda;Imobiliário;FII;CDI + 2,5% a.a. líquido de IR;6 + 1;Pós;;5;3
