@@ -1,0 +1,11 @@
+classe;conservadora;moderada;sofisticada;comentario
+Pós-fixado - Caixa (mínimo);20,00%;15,00%;10,00%;Piso, não alvo. Só conta o que resgata até D+1 (saldo, fundos DI/liquidez, Tesouro Selic). Cetipado nunca cobre esta classe.
+Pós-fixado - Demais;43,00%;11,00%;0,00%;Cetipados indexados ao CDI entram aqui. Fundos com Oasis, Genesis ou Aruba no nome também, apesar do rótulo Multimercado da XP.
+Inflação;12,50%;22,50%;27,50%;Cetipados indexados ao IPCA entram aqui.
+Prefixado;12,00%;15,00%;15,00%;Cetipados com taxa prefixada entram aqui.
+Renda Fixa Internacional;2,50%;2,50%;2,50%;
+Renda Variável Brasil;0,00%;8,50%;20,00%;
+Renda Variável Internacional;2,50%;4,50%;7,00%;
+Multimercados;2,50%;13,00%;8,00%;
+Fundos Listados;5,00%;5,00%;5,00%;
+Alternativos;0,00%;3,00%;5,00%;

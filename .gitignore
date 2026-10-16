@@ -1,0 +1,6 @@
+# Dados de cliente e documentos da XP: ficam só na máquina
+/prateleira/
+/posicoes/
+# Gerado por gerar_aprovados.py e sincronizar.py
+/sync/
+__pycache__/
