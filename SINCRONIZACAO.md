@@ -33,3 +33,7 @@ Quando o Guia de Fundos ou o histórico em `prateleira/` mudar, ou um arquivo de
 1. `python gerar_aprovados.py` e `python sincronizar.py exportar`: grava os corpos em `sync/docs/<colecao>/<doc>.json`.
 2. `ArtifactData batch` com `set` de cada arquivo (`file_path`), passando o `if_version` lido antes. Só `base/fundos` quando apenas a base mudou, para não sobrescrever edições do painel ainda não importadas.
 3. `config/sync` com `ultima_sync_em` atual.
+
+## Prateleira no painel
+
+A aba Prateleira lê `prateleira.json`, arquivo publicado junto do artefato com a resposta do GET `investment-funds-secondary` (captura descrita em `references/navegacao.md`, acrescida de `capturado_em`). É uma foto do momento da captura e não fica no repositório. Para atualizar: capture no Hub, baixe o JSON pela própria página e republique o artefato com `files: {"prateleira.json": <arquivo>}`.

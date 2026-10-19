@@ -222,6 +222,26 @@ textarea { resize: vertical; min-height: 40px; }
 .pend li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--warn); flex: none; }
 .empty { padding: 36px 12px; text-align: center; color: var(--muted); }
 
+/* prateleira */
+.ptable { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.ptable table { border-collapse: collapse; width: 100%; min-width: 920px; font-size: 13.5px; }
+.ptable th { background: var(--sunk); text-align: right; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 10px; white-space: nowrap; }
+.ptable td { padding: 9px 10px; border-top: 1px solid var(--line); text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; vertical-align: top; }
+.ptable th.l, .ptable td.l { text-align: left; }
+.ptable td.l { font-family: var(--body); white-space: normal; min-width: 260px; }
+.ptable td small { display: block; color: var(--muted); font-size: 11.5px; }
+.ptable tbody tr { cursor: pointer; }
+.ptable tbody tr:hover { background: var(--sunk); }
+.ptable td.res { color: var(--warn); }
+.ptable td.ag { color: var(--bad); }
+.sit { display: inline-block; font: 700 11px var(--body); letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; }
+.sit.disp { background: #dff1e6; color: var(--ok); }
+.sit.resid { background: #fdf0dc; color: var(--warn); }
+.sit.zero { background: var(--sunk); color: var(--muted); }
+.raw { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); gap: 6px 12px; margin: 0; font: 12.5px/1.4 var(--mono); }
+.raw dt { color: var(--muted); overflow-wrap: anywhere; }
+.raw dd { margin: 0; overflow-wrap: anywhere; }
+
 @media (max-width: 760px) {
   .track { grid-template-columns: 1fr; gap: 0; }
   .track::before { top: 20px; bottom: 20px; left: 34px; right: auto; width: 3px; height: auto; }
@@ -254,6 +274,7 @@ textarea { resize: vertical; min-height: 40px; }
   <section class="panel" id="fluxo" role="tabpanel"></section>
   <section class="panel" id="alocacao" role="tabpanel" hidden></section>
   <section class="panel" id="fundos" role="tabpanel" hidden></section>
+  <section class="panel" id="prateleira" role="tabpanel" hidden></section>
   <section class="panel" id="config" role="tabpanel" hidden></section>
 </div></main>
 <div id="drawerRoot"></div>
@@ -315,7 +336,8 @@ textarea { resize: vertical; min-height: 40px; }
 
   const S = { db: null, canWrite: true, base: null, aloc: null, par: null, sync: null, sob: {},
     alocDraft: null, parDraft: null, open: null, fundDraft: null, openComments: new Set(),
-    busca: "", foraDaLista: false, tab: "fluxo" };
+    busca: "", foraDaLista: false, tab: "fluxo",
+    prat: null, pratErro: false, pFam: "", pBusca: "", pAprov: false };
 
   // ---------- utilidades
   const $ = (id) => document.getElementById(id);
@@ -347,7 +369,7 @@ textarea { resize: vertical; min-height: 40px; }
   function semDados(txt) { return h("div", { class: "card empty" }, S.db ? txt : "Banco indisponível nesta visualização."); }
 
   // ---------- abas
-  const TABS = [["fluxo", "Fluxo"], ["alocacao", "Alocação"], ["fundos", "Fundos"], ["config", "Config"]];
+  const TABS = [["fluxo", "Fluxo"], ["alocacao", "Alocação"], ["fundos", "Fundos"], ["prateleira", "Prateleira"], ["config", "Config"]];
   function renderTabs() {
     $("tabs").replaceChildren(...TABS.map(([k, t]) => h("button", { role: "tab", "aria-selected": String(S.tab === k), "aria-controls": k,
       onclick: () => { S.tab = k; history.replaceState(null, "", "#" + k); try { localStorage.setItem("aba", k); } catch (e) {} showTab(); } }, ico(k), h("span", { class: "t" }, t))));
@@ -565,6 +587,77 @@ textarea { resize: vertical; min-height: 40px; }
     catch (e) { toast("dToast", erroTexto(e), true); }
   }
 
+  // ---------- PRATELEIRA (captura do GET investment-funds-secondary, publicada como prateleira.json)
+  const FAMILIA = { 5: "Cetipados", 6: "Alternativos", 7: "Portfólio Renda+", 8: "Revolvência" };
+  const SIT = { disp: "Disponível", resid: "Residual", zero: "Sem estoque" };
+  const numBR = (s) => Number(String(s ?? "").replace(/\./g, "").replace(",", "."));
+  const normNome = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+  function cnpjPrat(f) {
+    const m = String(f.documentRegulation || "").match(/(?<!\d)(\d{14})(?!\d)[^/]*\.pdf/i);
+    if (m) return m[1];
+    const b = S.base?.fundos.find((x) => normNome(x.fundo) === normNome(f.fundName));
+    return b ? b.cnpj : "";
+  }
+  // Fonte com estoque: quantidade >= mínimo em cotas (sem mínimo: > 0); abaixo disso é residual
+  function estoque(f) {
+    const min = Number(f.minimumQuotaQuantity) || 0, preco = numBR(f.unityPrice);
+    const fonte = (q, d) => { q = numBR(q); return { q, d: numBR(d), v: q * preco, ok: min ? q >= min : q > 0 }; };
+    const xp = fonte(f.stockOfTreasuryQuotas, f.secondaryPurchaseDiscount), cli = fonte(f.stockOfPeerToPeerQuotas, f.peerToPeerBuyDiscount);
+    return { xp, cli, min, sit: xp.ok || cli.ok ? "disp" : xp.q > 0 || cli.q > 0 ? "resid" : "zero" };
+  }
+  function renderPrat() {
+    const P = $("prateleira"), j = S.prat;
+    if (!j) { P.replaceChildren(h("div", { class: "card empty" }, S.pratErro ? "Captura da prateleira indisponível nesta visualização." : "Carregando a captura da prateleira…")); return; }
+    const ap = new Set((S.base?.fundos || []).filter((f) => situacao(f).ap).map((f) => f.cnpj));
+    const linhas = j.data.map((f) => { const cnpj = cnpjPrat(f); return { f, cnpj, ap: ap.has(cnpj), e: estoque(f) }; });
+    const naPrat = new Set(linhas.filter((x) => x.ap).map((x) => x.cnpj)).size;
+    const b = normNome(S.pBusca);
+    const vis = linhas.filter((x) => (!S.pFam || String(x.f.fundFamily) === S.pFam) && (!S.pAprov || x.ap) && (!b || normNome(x.f.fundName).includes(b)));
+    const conta = (s) => vis.filter((x) => x.e.sit === s).length;
+    const fams = Object.keys(FAMILIA).filter((k) => linhas.some((x) => String(x.f.fundFamily) === k));
+    const qtd = (s) => h("td", { class: s.q > 0 && !s.ok ? "res" : "" }, br(s.q, s.q % 1 ? 2 : 0), s.q > 0 ? h("small", {}, "R$ " + br(s.v, 0)) : null);
+    const desc = (s) => h("td", { class: s.d < 0 ? "ag" : "" }, br(s.d, 2) + "%");
+    P.replaceChildren(
+      h("div", { class: "card" },
+        h("div", { class: "head" }, h("h2", {}, "Prateleira do secundário"), h("p", { class: "cap" }, "Resposta do GET investment-funds-secondary, capturada em " + fmtData(j.capturado_em))),
+        h("div", { class: "chips" },
+          h("span", { class: "chip" }, j.data.length + " fundos"),
+          h("span", { class: "chip" }, "Mercado " + (j.isMarketOpen ? "aberto" : "fechado") + " na captura"),
+          j.highSecondaryOperationTime ? h("span", { class: "chip" }, "Operações até " + j.highSecondaryOperationTime.slice(0, 5)) : null,
+          ap.size ? h("span", { class: "chip" }, naPrat + " de " + ap.size + " aprovados na prateleira") : null)),
+      h("div", { class: "fstats" },
+        h("div", { class: "fstat", style: "background:var(--ok)" }, h("div", { class: "big" }, conta("disp")), h("span", {}, "disponíveis")),
+        h("div", { class: "fstat", style: "background:var(--warn)" }, h("div", { class: "big" }, conta("resid")), h("span", {}, "estoque residual")),
+        h("div", { class: "fstat neutral" }, h("div", { class: "big" }, conta("zero")), h("span", {}, "sem estoque"))),
+      h("div", { class: "toolbar" },
+        h("label", { class: "search" }, ico("busca"), h("input", { id: "pBusca", type: "search", placeholder: "Nome do fundo", value: S.pBusca, "aria-label": "Buscar fundo na prateleira",
+          oninput: (e) => { S.pBusca = e.target.value; renderPrat(); $("pBusca").focus(); } })),
+        h("div", { class: "opts", role: "group", "aria-label": "Família" }, [["", "Todas"], ...fams.map((k) => [k, FAMILIA[k]])].map(([k, t]) =>
+          h("button", { class: "opt", "aria-pressed": String(S.pFam === k), onclick: () => { S.pFam = k; renderPrat(); } }, t))),
+        h("label", { class: "switch" }, h("input", { type: "checkbox", id: "pAprov", checked: S.pAprov, onchange: (e) => { S.pAprov = e.target.checked; renderPrat(); } }), h("span", { class: "knob" }), "Só aprovados")),
+      h("div", { class: "ptable" }, h("table", {},
+        h("thead", {}, h("tr", {}, ["Fundo", "Preço", "Estoque XP", "Deságio XP", "Estoque cliente", "Deságio cliente", "Mínimo", "Público", "Situação"].map((t, i) => h("th", { class: i ? "" : "l" }, t)))),
+        h("tbody", {}, vis.map((x) => h("tr", { tabindex: 0, onclick: () => abrirPrat(x.f), onkeydown: (ev) => { if (ev.key === "Enter") abrirPrat(x.f); } },
+          h("td", { class: "l" }, h("b", {}, x.f.fundName), h("small", {}, [FAMILIA[x.f.fundFamily] || "Família " + x.f.fundFamily, x.cnpj || "sem CNPJ", x.ap ? "aprovado" : null].filter(Boolean).join(" · "))),
+          h("td", {}, x.f.unityPrice, h("small", {}, String(x.f.quotaDate || "").slice(0, 10).split("-").reverse().join("/"))),
+          qtd(x.e.xp), desc(x.e.xp), qtd(x.e.cli), desc(x.e.cli),
+          h("td", {}, br(x.e.min, 0) + " cotas", h("small", {}, "R$ " + x.f.minimalInitialInvestment)),
+          h("td", {}, x.f.isProfessionalInvestor ? "Prof." : x.f.isQualifiedInvestor ? "Qualif." : "Geral"),
+          h("td", {}, h("span", { class: "sit " + x.e.sit }, SIT[x.e.sit]))))))),
+      h("p", { class: "cap" }, "Clique num fundo para ver o registro completo da resposta. Deságio negativo é ágio.")
+    );
+  }
+  function abrirPrat(f) {
+    S.open = "prateleira";
+    const val = (v) => v == null || v === "" ? "—" : typeof v === "object" ? JSON.stringify(v) : String(v);
+    $("drawerRoot").replaceChildren(
+      h("div", { class: "backdrop", onclick: fechar }),
+      h("aside", { class: "drawer", role: "dialog", "aria-modal": "true", "aria-label": f.fundName },
+        h("div", { class: "dtop" }, h("h3", {}, f.fundName), h("button", { class: "iconbtn", "aria-label": "Fechar", onclick: fechar }, ico("fechar"))),
+        h("p", { class: "cap" }, Object.keys(f).length + " campos, como vieram da API"),
+        h("dl", { class: "raw" }, Object.entries(f).flatMap(([k, v]) => [h("dt", {}, k), h("dd", {}, val(v))]))));
+  }
+
   // ---------- CONFIG
   const strip = (p) => { if (!p) return null; const { atualizado_em, ...r } = p; return r; };
   const parDirty = () => S.parDraft && JSON.stringify(S.parDraft) !== JSON.stringify(strip(S.par));
@@ -668,11 +761,13 @@ textarea { resize: vertical; min-height: 40px; }
   }
 
   // ---------- montagem
-  function renderAll() { renderStatus(); renderFluxo(); renderAloc(); renderFundos(); renderConfig(); }
+  function renderAll() { renderStatus(); renderFluxo(); renderAloc(); renderFundos(); renderPrat(); renderConfig(); }
   let ini = location.hash.slice(1);
   if (!ini) { try { ini = localStorage.getItem("aba") || ""; } catch (e) {} }
   S.tab = TABS.some(([k]) => k === ini) ? ini : "fluxo";
   showTab(); renderAll();
+  fetch("prateleira.json").then((r) => r.ok ? r.json() : Promise.reject(r.status))
+    .then((j) => { S.prat = j; renderPrat(); }, () => { S.pratErro = true; renderPrat(); });
 
   (async () => {
     const db = await window.claude?.use?.("db");
@@ -681,13 +776,13 @@ textarea { resize: vertical; min-height: 40px; }
     const user = await window.claude?.use?.("user");
     S.canWrite = (user ? await user.can("data.write") : null) !== false;
     const sub = (path, key, after) => db.doc(path).onSnapshot((s) => { S[key] = s.exists ? s.data() : null; after(); renderStatus(); }, () => {});
-    sub("base/fundos", "base", () => { renderFundos(); renderConfig(); });
+    sub("base/fundos", "base", () => { renderFundos(); renderPrat(); renderConfig(); });
     sub("config/alocacao", "aloc", renderAloc);
-    sub("config/parametros", "par", () => { renderConfig(); renderFundos(); });
+    sub("config/parametros", "par", () => { renderConfig(); renderFundos(); renderPrat(); });
     sub("config/sync", "sync", renderConfig);
     db.collection("sobrescritas").onSnapshot((q) => {
       S.sob = Object.fromEntries(q.docs.map((d) => [d.id, d.data()]));
-      renderFundos(); renderStatus();
+      renderFundos(); renderPrat(); renderStatus();
       if (!S.parDraft || !parDirty()) renderConfig();
     }, () => {});
     renderAll();
