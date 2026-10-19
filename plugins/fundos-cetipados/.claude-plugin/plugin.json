@@ -1,6 +1,6 @@
 {
   "name": "fundos-cetipados",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Sugestão de aplicação em fundos cetipados do mercado secundário XP a partir da posição consolidada do cliente.",
   "author": {
     "name": "Victor Inoue"
