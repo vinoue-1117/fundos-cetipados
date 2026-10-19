@@ -34,15 +34,13 @@ Pergunte tudo o que faltar numa mensagem só. Item que o assessor não responder
 
 ## 2. Carteira atual por classe
 
-Leia a posição e atribua cada ativo a uma classe de `alocacao-alvo.csv`, usando o mapeamento de seções e as reclassificações de `regras.md`.
+Só as classes que os cetipados cobrem entram na análise: **Pós-fixado**, **Inflação** e **Prefixado**. Leia a posição e atribua cada ativo de renda fixa a uma delas, usando o mapeamento de seções e as reclassificações de `regras.md`. O resto da carteira conta só no patrimônio total.
 
-Calcule o % de cada classe sobre o patrimônio total. Pronto quando toda linha do relatório estiver numa classe, com as inferidas marcadas, e a soma bater com o patrimônio do relatório.
+Calcule o % de cada uma sobre o patrimônio total. Pronto quando todo ativo de renda fixa estiver numa classe, com os inferidos marcados.
 
 ## 3. Lacunas contra o alvo
 
-Para cada classe: alvo do perfil, % atual, e diferença em R$ sobre o patrimônio pós-aplicação. Os cetipados podem cobrir lacunas em **Pós-fixado**, **Inflação** e **Prefixado** (pelo `fator` de `aprovados.csv`).
-
-Se as lacunas positivas estiverem só em classes que cetipados não cobrem (RV, Internacional, Multimercados), diga isso na saída e indique a classe que pede o recurso. A sugestão de cetipados, nesse caso, é opcional e justificada.
+Para cada uma das três classes: alvo do perfil, % atual e lacuna em R$ (alvo × patrimônio pós-aplicação − posição atual). O `fator` de `aprovados.csv` dá a classe do fundo: Pós → Pós-fixado, Pré → Prefixado, Inflação → Inflação.
 
 ## 4. Prateleira
 
@@ -54,6 +52,8 @@ Monte a sugestão com um ou mais fundos disponíveis:
 
 - Priorize as classes com maior lacuna em R$.
 - Respeite o limite por ativo de `regras.md`, somando a posição existente no mesmo fundo. Fundo já no limite ou acima não recebe sugestão.
+- O valor sugerido não passa do valor disponível somado das fontes com estoque (`references/navegacao.md`, Disponibilidade).
+- Valores em R$. A conversão em cotas fica com a plataforma.
 - A soma das sugestões fecha o valor de entrada, ou a saída explica o resíduo.
 
 Dentro dessas regras há liberdade de julgamento: diversificação entre gestoras e tipos, prazo de encerramento, condição da oferta. Registre o motivo de cada escolha em uma linha.
@@ -61,8 +61,8 @@ Dentro dessas regras há liberdade de julgamento: diversificação entre gestora
 ## 6. Saída (tabela no chat)
 
 1. **Parâmetros usados**: perfil, qualificação, limite por ativo (em % e em R$), valor de entrada e origem, patrimônio-base. Cada ajuste da conversa aparece com o valor do arquivo ao lado, ex.: `Inflação 20% (padrão: 15%)`.
-2. **Alocação por classe**: classe | alvo | atual | após sugestão (em %) | lacuna (R$).
+2. **Alocação por classe** (só as três): classe | alvo | atual | após sugestão (em %) | lacuna antes da sugestão (R$).
 3. **Sugestão**: fundo | fator | valor (R$) | % do patrimônio | dados da oferta | motivo.
-4. **Lacunas e ressalvas**: dados ausentes, classificações inferidas, fundos `revisar=sim` ignorados, resíduo não alocado.
+4. **Lacunas e ressalvas**: dados ausentes, classificações inferidas, fundos indisponíveis ou fora do público-alvo, fundos `revisar=sim` ignorados, resíduo não alocado.
 
 Formato: moeda `R$ 1.234,56`, percentuais com vírgula, datas `DD/MM/AAAA`.

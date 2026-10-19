@@ -5,7 +5,7 @@ Regras do assessor que a skill aplica. Os valores numéricos e listas ficam em `
 ## Limite por ativo
 
 - Máximo por fundo: `limite_por_ativo_pct` de `parametros.csv`, em % do patrimônio total do cliente.
-- A conta soma a posição que o cliente já tem no fundo com o valor sugerido.
+- Posição que o cliente já tem no fundo + valor sugerido ≤ limite.
 - O patrimônio usado é o "Este é o seu patrimônio" do relatório, acrescido do valor de entrada quando ele for aporte novo.
 - O relatório não traz CNPJ: case a posição com o fundo de `aprovados.csv` pelo nome, ignorando maiúsculas e sufixos como FII, FIAgro, Feeder e RL. Se o nome puder ser de mais de um fundo, pergunte ao assessor.
 - Fundo em que a posição existente já atinge ou passa do limite não recebe sugestão.
@@ -29,6 +29,7 @@ A XP classifica alguns fundos como Multimercado quando a classificação correta
 | Fundos de Renda Fixa Pós-Fixado | Pós-fixado |
 | Fundos de Renda Fixa Pré-Fixado | Prefixado |
 | Fundos de Inflação | Inflação |
-| Fundos Multimercado | Multimercados (salvo reclassificação acima) |
+| Fundos Multimercado com termo de reclassificação | Pós-fixado |
+| Saldo disponível | Pós-fixado |
 
 Seção que não está na tabela: classificar pelo nome e indexador do ativo e marcar a linha como inferida na saída.

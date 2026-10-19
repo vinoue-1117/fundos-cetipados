@@ -40,7 +40,7 @@ O texto da página (`get_page_text`) passa de 180 mil caracteres e não traz CNP
    const cnpjs = [/* CNPJs de aprovados.csv, 14 dígitos, como texto */];
    const d = JSON.parse(window.__cap.lista).data;
    const cnpj = f => (String(f.documentRegulation || '').match(/(?<!\d)(\d{14})(?!\d)[^/]*\.pdf/i) || [])[1] || '';
-   const linha = f => [cnpj(f), f.fundName, f.fundFamily, f.unityPrice, f.quotaDate,
+   const linha = f => [cnpj(f), f.fundName, f.fundFamily, f.unityPrice, String(f.quotaDate).slice(0, 10).split('-').reverse().join('/'),
      f.stockOfTreasuryQuotas, f.secondaryPurchaseDiscount, f.stockOfPeerToPeerQuotas, f.peerToPeerBuyDiscount,
      f.minimumQuotaQuantity, f.minimalInitialInvestment, f.isQualifiedInvestor, f.isProfessionalInvestor,
      (f.tags || []).map(x => x.title).join('/')].join('|');
@@ -49,7 +49,7 @@ O texto da página (`get_page_text`) passa de 180 mil caracteres e não traz CNP
    window.__cap.rows.length;
    ```
 
-   Leia em blocos de 8: `window.__cap.rows.slice(0, 8).join('\n')`, depois `slice(8, 16)` e assim por diante. Aprovado que não apareceu (sem CNPJ na URL): `window.__cap.d.filter(f => /trecho do nome/i.test(f.fundName)).map(window.__cap.linha).join('\n')`.
+   Leia em blocos de 6: `window.__cap.rows.slice(0, 6).join('\n')`, depois `slice(6, 12)` e assim por diante. Aprovado que não apareceu (sem CNPJ na URL): `window.__cap.d.filter(f => /trecho do nome/i.test(f.fundName)).map(window.__cap.linha).join('\n')`.
 4. Restaure: `window.fetch = window.__origFetch`.
 
 A captura falhou (sem `__cap.lista` depois do Atualizar): caia para `get_page_text` na aba **Cetipados** e depois na **Portfólio Renda+**, casando pelo nome.
@@ -57,7 +57,7 @@ A captura falhou (sem `__cap.lista` depois do Atualizar): caia para `get_page_te
 ### Casar com `aprovados.csv`
 
 - CNPJ: 14 dígitos no nome do arquivo de `documentRegulation`, com ou sem sufixo de versão (`.../Regulamento_61238364000107.pdf`, `.../Regulamento_60513922000124_v1.pdf`).
-- Alguns fundos não têm o CNPJ na URL (regulamento em `institucional.xpi.com.br` ou campo vazio). Para esses, case pelo nome. Nome divergente: lacuna.
+- Alguns fundos não têm o CNPJ na URL (regulamento em `institucional.xpi.com.br` ou campo vazio). Para esses, case pelo nome completo, ignorando só maiúsculas e acentos. Nome divergente: lacuna. Mais de um candidato: pergunte ao assessor.
 - Fundo da prateleira que não está em `aprovados.csv` fica fora da sugestão.
 
 ### Campos
@@ -68,7 +68,7 @@ A captura falhou (sem `__cap.lista` depois do Atualizar): caia para `get_page_te
 | `documentRegulation` | — | CNPJ (ver acima) |
 | `fundFamily` | aba | 5 = Cetipados, 7 = Portfólio Renda+ (conferidos com `aba_guia`); 6 = Alternativos, 8 = Revolvência (pelo conteúdo) |
 | `unityPrice` | Preço unitário | R$ por cota |
-| `quotaDate` | Data da cota | data do preço |
+| `quotaDate` | Data da cota | data do preço, em ISO (`2026-10-15T00:00:00`); a linha compacta converte para DD/MM/AAAA |
 | `stockOfTreasuryQuotas` | Qtd. estoque XP | cotas disponíveis no estoque XP |
 | `secondaryPurchaseDiscount` | Deságio/Ágio estoque XP | % sobre o preço; negativo = ágio |
 | `stockOfPeerToPeerQuotas` | Qtd. estoque cliente | cotas à venda por clientes |
