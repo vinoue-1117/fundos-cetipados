@@ -52,7 +52,7 @@ Monte a sugestão com um ou mais fundos disponíveis:
 
 - Priorize as classes com maior lacuna em R$.
 - Respeite o limite por ativo de `regras.md`, somando a posição existente no mesmo fundo. Fundo já no limite ou acima não recebe sugestão.
-- O valor sugerido não passa do valor disponível somado das fontes com estoque (`references/navegacao.md`, Disponibilidade).
+- O valor sugerido fica entre a aplicação mínima da oferta e o valor disponível somado das fontes com estoque (`references/navegacao.md`, Disponibilidade).
 - Valores em R$. A conversão em cotas fica com a plataforma.
 - A soma das sugestões fecha o valor de entrada, ou a saída explica o resíduo.
 
@@ -60,7 +60,7 @@ Dentro dessas regras há liberdade de julgamento: diversificação entre gestora
 
 ## 6. Saída (tabela no chat)
 
-1. **Parâmetros usados**: perfil, qualificação, limite por ativo (em % e em R$), valor de entrada e origem, patrimônio-base. Cada ajuste da conversa aparece com o valor do arquivo ao lado, ex.: `Inflação 20% (padrão: 15%)`.
+1. **Parâmetros usados**: perfil, qualificação, limite por ativo (em % e em R$), valor de entrada e origem, patrimônio-base com a data da posição. Cada ajuste da conversa aparece com o valor do arquivo ao lado, ex.: `Inflação 20% (padrão: 15%)`.
 2. **Alocação por classe** (só as três): classe | alvo | atual | após sugestão (em %) | lacuna antes da sugestão (R$).
 3. **Sugestão**: fundo | fator | valor (R$) | % do patrimônio | dados da oferta | motivo.
 4. **Lacunas e ressalvas**: dados ausentes, classificações inferidas, fundos indisponíveis ou fora do público-alvo, fundos `revisar=sim` ignorados, resíduo não alocado.
