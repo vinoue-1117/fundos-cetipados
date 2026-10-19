@@ -7,6 +7,7 @@ Regras do assessor que a skill aplica. Os valores numéricos e listas ficam em `
 - Máximo por fundo: `limite_por_ativo_pct` de `parametros.csv`, em % do patrimônio total do cliente.
 - Posição que o cliente já tem no fundo + valor sugerido ≤ limite.
 - O patrimônio usado é o "Este é o seu patrimônio" do relatório, acrescido do valor de entrada quando ele for aporte novo.
+- O valor de cada ativo é a coluna **Posição** do relatório (não "Valor líquido"): é a que soma "Este é o seu patrimônio".
 - O relatório não traz CNPJ: case a posição com o fundo de `aprovados.csv` pelo nome, ignorando maiúsculas e sufixos como FII, FIAgro, Feeder e RL. Se o nome puder ser de mais de um fundo, pergunte ao assessor.
 - Fundo em que a posição existente já atinge ou passa do limite não recebe sugestão.
 
