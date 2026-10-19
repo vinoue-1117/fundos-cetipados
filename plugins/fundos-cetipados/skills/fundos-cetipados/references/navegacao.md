@@ -39,7 +39,7 @@ O texto da página (`get_page_text`) passa de 180 mil caracteres e não traz CNP
    ```js
    const cnpjs = [/* CNPJs de aprovados.csv, 14 dígitos, como texto */];
    const d = JSON.parse(window.__cap.lista).data;
-   const cnpj = f => (String(f.documentRegulation || '').match(/(\d{14})\.pdf/i) || [])[1] || '';
+   const cnpj = f => (String(f.documentRegulation || '').match(/(?<!\d)(\d{14})(?!\d)[^/]*\.pdf/i) || [])[1] || '';
    const linha = f => [cnpj(f), f.fundName, f.fundFamily, f.unityPrice, f.quotaDate,
      f.stockOfTreasuryQuotas, f.secondaryPurchaseDiscount, f.stockOfPeerToPeerQuotas, f.peerToPeerBuyDiscount,
      f.minimumQuotaQuantity, f.minimalInitialInvestment, f.isQualifiedInvestor, f.isProfessionalInvestor,
@@ -56,7 +56,7 @@ A captura falhou (sem `__cap.lista` depois do Atualizar): caia para `get_page_te
 
 ### Casar com `aprovados.csv`
 
-- CNPJ: 14 dígitos no nome do arquivo de `documentRegulation` (`.../Regulamento_61238364000107.pdf`).
+- CNPJ: 14 dígitos no nome do arquivo de `documentRegulation`, com ou sem sufixo de versão (`.../Regulamento_61238364000107.pdf`, `.../Regulamento_60513922000124_v1.pdf`).
 - Alguns fundos não têm o CNPJ na URL (regulamento em `institucional.xpi.com.br` ou campo vazio). Para esses, case pelo nome. Nome divergente: lacuna.
 - Fundo da prateleira que não está em `aprovados.csv` fica fora da sugestão.
 
