@@ -68,8 +68,6 @@ h2 { font: 700 22px/1.15 var(--display); margin: 0; letter-spacing: -0.01em; tex
 .station .n { position: absolute; top: -6px; right: -6px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font: 700 12px/24px var(--display); }
 .station b { font: 700 16px/1.1 var(--display); }
 .station .crit { font-size: 12.5px; color: var(--muted); max-width: 16ch; }
-.station.draft .disc { border-style: dashed; border-color: var(--warn); color: var(--warn); }
-.badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; background: #fdf0dc; color: var(--warn); }
 .ends { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-top: 26px; }
 .ends .arrow { font-size: 22px; color: var(--muted); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -87,6 +85,12 @@ h2 { font: 700 22px/1.15 var(--display); margin: 0; letter-spacing: -0.01em; tex
 .node.here { border-color: var(--ink); background: var(--ink); color: var(--surface); }
 .node.here .ico { color: var(--surface); }
 .flow .to { flex: none; color: var(--muted); font-size: 18px; }
+.inst { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 24px; }
+.inst ul, .inst ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 8px; }
+.inst li::marker { font-weight: 700; color: var(--accent); }
+.inst code { font: 500 13.5px var(--mono); background: var(--sunk); padding: 2px 6px; border-radius: 5px; overflow-wrap: anywhere; }
+.inst .copy { margin-left: 6px; padding: 3px 9px; font-size: 12px; }
+.inst .uso { grid-column: 1 / -1; padding: 14px; border-radius: 10px; background: var(--accent-soft); font-size: 14px; }
 
 /* alocação */
 .bars { display: grid; gap: 14px; }
@@ -255,6 +259,7 @@ textarea { resize: vertical; min-height: 40px; }
   .flow .tagline { width: auto; }
   .flow .to { transform: rotate(90deg); align-self: center; }
   .barrow { grid-template-columns: 1fr; gap: 6px; }
+  .inst { grid-template-columns: 1fr; }
   .agrid { grid-template-columns: minmax(0, 1fr) repeat(3, 62px) 34px; column-gap: 6px; }
   .cet { display: none; }
   nav.tabs button span.t { display: none; }
@@ -397,23 +402,44 @@ textarea { resize: vertical; min-height: 40px; }
   function renderFluxo() {
     const est = [
       ["inputs", "Inputs", "4 itens confirmados"],
-      ["carteira", "Carteira", "soma = patrimônio"],
+      ["carteira", "Carteira", "renda fixa em Pós, Inflação e Pré"],
       ["lacunas", "Lacunas", "alvo − atual, em R$"],
-      ["prateleira", "Prateleira", "disponível ou não", true],
+      ["prateleira", "Prateleira", "disponível ou não"],
       ["selecao", "Seleção", "fecha o valor de entrada"],
-      ["saida", "Saída", "3 tabelas no chat"],
+      ["saida", "Saída", "4 blocos no chat"],
     ];
+    const REPO = "vinoue-1117/fundos-cetipados";
+    const b = (t) => h("b", {}, t);
     $("fluxo").replaceChildren(
       h("div", { class: "card" },
         h("div", { class: "head" }, h("h2", {}, "O que a skill faz"), h("p", { class: "cap" }, "Abaixo de cada passo: quando ele está pronto")),
-        h("div", { class: "track" }, est.map(([ic, t, c, draft], i) => h("div", { class: "station" + (draft ? " draft" : "") },
+        h("div", { class: "track" }, est.map(([ic, t, c], i) => h("div", { class: "station" },
           h("div", { class: "disc" }, ico(ic), h("span", { class: "n" }, i + 1)),
-          h("b", {}, t, draft ? " " : "", draft ? h("span", { class: "badge" }, "rascunho") : ""),
+          h("b", {}, t),
           h("span", { class: "crit" }, c)))),
         h("div", { class: "ends" },
           h("div", { class: "chips" }, [["planilha", "Posição"], ["dinheiro", "Valor"], ["perfil", "Perfil"], ["selo", "Qualificação"]].map(([i, t]) => h("span", { class: "chip" }, ico(i), t))),
           h("span", { class: "arrow" }, "→"),
           h("div", { class: "chips out" }, [["alocacao", "Alocação"], ["fundos", "Sugestão"], ["alerta", "Lacunas"]].map(([i, t]) => h("span", { class: "chip" }, ico(i), t))))
+      ),
+      h("div", { class: "card" },
+        h("div", { class: "head" }, h("h2", {}, "Instalação"), h("p", { class: "cap" }, "Versão 1.2.0 · plugin do Cowork, no app desktop do Claude")),
+        h("div", { class: "inst" },
+          h("div", {}, h("span", { class: "lbl" }, "Antes"),
+            h("ul", {},
+              h("li", {}, "Plano Pro ou Max, com o app desktop instalado."),
+              h("li", {}, "Em ", b("Configurações › Capacidades"), ", ", b("Execução de código e criação de arquivos"), " ligada. Sem ela, skills não aparecem."),
+              h("li", {}, "Extensão ", b("Claude in Chrome"), " no Chrome em que você entra no Hub XP, logada na mesma conta do Claude."))),
+          h("div", {}, h("span", { class: "lbl" }, "Passos"),
+            h("ol", {},
+              h("li", {}, "No Cowork, abra ", b("Customize › Plugins"), "."),
+              h("li", {}, b("Add › Add marketplace"), " e digite ", h("code", { id: "repo" }, REPO),
+                h("button", { class: "btn copy", onclick: (e) => copiar(e.currentTarget, REPO) }, "Copiar"), ". Se pedir ", b("Connect GitHub"), ", entre na sua conta."),
+              h("li", {}, "Em ", b("Discover"), ", abra ", b("fundos-cetipados"), " e clique em ", b("Add"), "."),
+              h("li", {}, "No marketplace ", b("fundos-cetipados"), ", ligue ", b("Sync automatically"), ". Versões novas chegam sozinhas; ", b("Check for updates"), " busca na hora."),
+              h("li", {}, "Confira o plugin ligado em ", b("Customize › Plugins"), "."))),
+          h("div", { class: "uso" }, b("Uso: "), "numa tarefa nova do Cowork, anexe a posição consolidada exportada do Hub e peça, por exemplo, ",
+            h("i", {}, "sugerir fundo cetipado para aplicar R$ 100.000,00 deste cliente"), ". Para ver alvos, parâmetros e aprovados: ", h("i", {}, "mostrar configuração dos cetipados"), "."))
       ),
       h("div", { class: "card" },
         h("div", { class: "head" }, h("h2", {}, "Limites")),
@@ -426,6 +452,11 @@ textarea { resize: vertical; min-height: 40px; }
           flow("Dados novos", [["planilha", "Guia + histórico"], ["terminal", "Claude Code"], ["painel", "Lista base", true]]))
       )
     );
+  }
+  async function copiar(btn, txt) {
+    try { await navigator.clipboard.writeText(txt); btn.textContent = "Copiado"; }
+    catch (e) { getSelection().selectAllChildren($("repo")); btn.textContent = "Ctrl+C"; }
+    setTimeout(() => { btn.textContent = "Copiar"; }, 1500);
   }
   function flow(tag, nodes) {
     const kids = [h("span", { class: "lbl tagline" }, tag)];
